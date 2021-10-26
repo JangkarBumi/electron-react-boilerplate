@@ -1,6 +1,6 @@
-const { app, BrowserWindow } = require('electron');
-
+const { app, BrowserWindow, Tray, Menu } = require('electron');
 const path = require('path');
+
 function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow({
@@ -19,7 +19,22 @@ function createWindow() {
   );
 }
 
-app.on('ready', createWindow);
+let tray = null;
+
+app.on('ready',()=>{
+  app.dock.hide();
+  createWindow();
+  tray = new Tray(path.join(__dirname, './assets/cup.png'));
+  const contextMenu = Menu.buildFromTemplate([
+    { label: 'Item1', type: 'radio' },
+    { label: 'Item2', type: 'radio' },
+    { label: 'Item3', type: 'radio', checked: true },
+    { label: 'Item4', type: 'radio' },
+]);
+  // tray.setTitle('hello world');
+  tray.setToolTip('This is my application.');
+  tray.setContextMenu(contextMenu);
+});
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
