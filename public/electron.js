@@ -1,39 +1,51 @@
 const { app, BrowserWindow, Tray, Menu } = require('electron');
 const path = require('path');
 
-function createWindow() {
-  // Create the browser window.
-  const win = new BrowserWindow({
-    width: 800,
-    height: 600,
-    webPreferences: {
-      nodeIntegration: true,
-      enableRemoteModule: true,
-    },
-  });
-
-  win.loadURL(
-    app.isPackaged
-      ? `file://${path.join(__dirname, '../build/index.html')}`
-      : 'http://localhost:3000',
-  );
-}
+// function createWindow() {
+//   // Create the browser window.
+// }
 
 let tray = null;
 
 app.on('ready',()=>{
   app.dock.hide();
-  createWindow();
+  // createWindow();
+
+ const win = new BrowserWindow({
+   width: 800,
+   height: 600,
+   webPreferences: {
+     nodeIntegration: true,
+     enableRemoteModule: true,
+   },
+ });
+
+ win.loadURL(
+   app.isPackaged
+     ? `file://${path.join(__dirname, '../build/index.html')}`
+     : 'http://localhost:3000',
+ );
+
   tray = new Tray(path.join(__dirname, './assets/cup.png'));
-  const contextMenu = Menu.buildFromTemplate([
-    { label: 'Item1', type: 'radio' },
-    { label: 'Item2', type: 'radio' },
-    { label: 'Item3', type: 'radio', checked: true },
-    { label: 'Item4', type: 'radio' },
-]);
+
+ tray.on('click', function() { win.show() })
+
+  // const contextMenu = Menu.buildFromTemplate([
+  //   {
+  //     label: 'Open Main Window',
+  //     type: 'normal',
+  //     click: () => {
+  //       /* Open the Main Window */
+  //         win.show();
+  //     },
+  //   },
+  //   { label: 'Item2', type: 'radio' },
+  //   { label: 'Item3', type: 'radio', checked: true },
+  //   { label: 'Item4', type: 'radio' },
+  // ]);
   // tray.setTitle('hello world');
-  tray.setToolTip('This is my application.');
-  tray.setContextMenu(contextMenu);
+  // tray.setToolTip('This is my application.');
+  // tray.setContextMenu(contextMenu);
 });
 
 // Quit when all windows are closed.
