@@ -23,7 +23,10 @@ app.on('ready',()=>{
  });
 
  // eslint-disable-next-line no-unused-vars
- !app.isPackaged && win.webContents.openDevTools();const electronReload = require('electron-reload');
+ if(!app.isPackaged){
+    win.webContents.openDevTools();
+    const electronReload = require('electron-reload');
+ }
 
  win.loadURL(
    app.isPackaged
