@@ -14,19 +14,38 @@ app.on('ready',()=>{
   // createWindow();
 
  const mainWindow = new BrowserWindow({
-   width: 800,
-   height: 600,
+   width: 400,
+   height: 650,
    webPreferences: {
      nodeIntegration: true,
      enableRemoteModule: true,
    },
  });
 
-   const showWindow = () => {
-     mainWindow.setVisibleOnAllWorkspaces(true);
-     mainWindow.show();
-     mainWindow.setVisibleOnAllWorkspaces(false);
-   };
+const getWindowPosition = () => {
+  const windowBounds = mainWindow.getBounds();
+  const trayBounds = tray.getBounds();
+  const x = Math.round(
+    trayBounds.x + trayBounds.width / 2 - windowBounds.width / 2,
+  );
+  const y = Math.round(trayBounds.y + trayBounds.height);
+  return { x, y };
+};
+
+ const setWinPosition = () => {
+    const position = getWindowPosition();
+    mainWindow.setPosition(position.x, position.y, false);
+  };
+
+const showWindow = () => {
+  const position = getWindowPosition();
+  mainWindow.setPosition(position.x, position.y, false);
+  mainWindow.show();
+  mainWindow.setVisibleOnAllWorkspaces(true);
+  mainWindow.focus();
+  mainWindow.setVisibleOnAllWorkspaces(false);
+};
+
 
   const toggleWindow = () => {
     if (mainWindow.isVisible()) {
@@ -34,13 +53,13 @@ app.on('ready',()=>{
     } else {
       // setWinPosition();
       showWindow();
-      mainWindow.focus();
+      // mainWindow.focus();
     }
   };
 
  // eslint-disable-next-line no-unused-vars
  if(!app.isPackaged){
-    mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools({ mode: 'detach' });
     const electronReload = require('electron-reload');
  }
 
@@ -52,7 +71,9 @@ app.on('ready',()=>{
 
   tray = new Tray(path.join(__dirname, './assets/cup.png'));
 
- tray.on('click', function() { toggleWindow() })
+  setWinPosition();
+
+  tray.on('click', function() { toggleWindow() })
 
   // const contextMenu = Menu.buildFromTemplate([
   //   {
