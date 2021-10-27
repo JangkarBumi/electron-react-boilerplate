@@ -1,5 +1,10 @@
 {
-  "name": "electron-react-config",
+  "name": "extra-text",
+  "description": "Lorem12",
+  "author": {
+    "name": "Zeha",
+    "email": "zehairawan@gmail.com"
+  },
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -8,7 +13,6 @@
     "@testing-library/user-event": "^12.1.10",
     "concurrently": "^6.3.0",
     "cross-env": "^7.0.3",
-    "electron": "^15.3.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
@@ -24,7 +28,36 @@
     "eject": "react-scripts eject",
     "electron:serve": "concurrently -k \"cross-env BROWSER=none npm run start\" \"npm run electron:start\"",
     "electron:build": "npm run build && electron-builder -c.extraMetadata.main=build/electron.js",
-    "electron:start": "wait-on tcp:3000 && electron ."
+    "electron:start": "wait-on tcp:3000 && electron .",
+    "package": "npm run build && electron-builder build"
+  },
+  "build": {
+    "productName": "ExtraText",
+    "appId": "org.erb.ExtraText",
+    "dmg": {
+      "contents": [
+        {
+          "x": 110,
+          "y": 150
+        },
+        {
+          "x": 240,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    },
+    "win": {
+      "target": "squirrel",
+      "icon": "build/icon.ico"
+    }
   },
   "eslintConfig": {
     "extends": [
@@ -45,6 +78,8 @@
     ]
   },
   "devDependencies": {
+    "electron": "^15.3.0",
+    "electron-builder": "^22.13.1",
     "electron-reload": "^2.0.0-alpha.1"
   }
 }
