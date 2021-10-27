@@ -1,5 +1,7 @@
 const { app, BrowserWindow, Tray, Menu } = require('electron');
 const path = require('path');
+// eslint-disable-next-line no-unused-vars
+const electronReload = require('electron-reload');
 
 // function createWindow() {
 //   // Create the browser window.
