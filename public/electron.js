@@ -20,6 +20,8 @@ app.on('ready',()=>{
    },
  });
 
+ !app.isPackaged && win.webContents.openDevTools()
+
  win.loadURL(
    app.isPackaged
      ? `file://${path.join(__dirname, '../build/index.html')}`
