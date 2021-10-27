@@ -13,7 +13,7 @@ app.on('ready',()=>{
   app.dock.hide();
   // createWindow();
 
- const win = new BrowserWindow({
+ const mainWindow = new BrowserWindow({
    width: 800,
    height: 600,
    webPreferences: {
@@ -22,13 +22,29 @@ app.on('ready',()=>{
    },
  });
 
+   const showWindow = () => {
+     mainWindow.setVisibleOnAllWorkspaces(true);
+     mainWindow.show();
+     mainWindow.setVisibleOnAllWorkspaces(false);
+   };
+
+  const toggleWindow = () => {
+    if (mainWindow.isVisible()) {
+      mainWindow.hide();
+    } else {
+      // setWinPosition();
+      showWindow();
+      mainWindow.focus();
+    }
+  };
+
  // eslint-disable-next-line no-unused-vars
  if(!app.isPackaged){
-    win.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
     const electronReload = require('electron-reload');
  }
 
- win.loadURL(
+ mainWindow.loadURL(
    app.isPackaged
      ? `file://${path.join(__dirname, '../build/index.html')}`
      : 'http://localhost:3000',
@@ -36,7 +52,7 @@ app.on('ready',()=>{
 
   tray = new Tray(path.join(__dirname, './assets/cup.png'));
 
- tray.on('click', function() { win.show() })
+ tray.on('click', function() { toggleWindow() })
 
   // const contextMenu = Menu.buildFromTemplate([
   //   {
@@ -65,8 +81,8 @@ app.on('window-all-closed', function () {
   }
 });
 
-app.on('activate', function () {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (BrowserWindow.getAllWindows().length === 0) createWindow();
-});
+// app.on('activate', function () {
+//   // On OS X it's common to re-create a window in the app when the
+//   // dock icon is clicked and there are no other windows open.
+//   if (BrowserWindow.getAllWindows().length === 0) createWindow();
+// });
