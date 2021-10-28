@@ -6,6 +6,10 @@ const path = require('path');
 // function createWindow() {
 //   // Create the browser window.
 // }
+const { ipcMain } = require('electron');
+ipcMain.on('close-me', (evt, arg) => {
+  app.quit();
+});
 
 let tray = null;
 
@@ -16,9 +20,13 @@ app.on('ready',()=>{
  const mainWindow = new BrowserWindow({
    width: 400,
    height: 650,
+   fullscreenable: false,
+   resizable: false,
+   frame: false, // hide browser control minimize, maximize
    webPreferences: {
      nodeIntegration: true,
      enableRemoteModule: true,
+     contextIsolation: false,
    },
  });
 
