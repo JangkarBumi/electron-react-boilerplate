@@ -20,6 +20,7 @@ app.on('ready',()=>{
  const mainWindow = new BrowserWindow({
    width: 400,
    height: 650,
+  //  show: false,
    fullscreenable: false,
    resizable: false,
    frame: false, // hide browser control minimize, maximize
@@ -59,9 +60,9 @@ const showWindow = () => {
     if (mainWindow.isVisible()) {
       mainWindow.hide();
     } else {
-      // setWinPosition();
+      setWinPosition();
       showWindow();
-      // mainWindow.focus();
+      mainWindow.focus();
     }
   };
 
@@ -77,11 +78,37 @@ const showWindow = () => {
      : 'http://localhost:3000',
  );
 
+
+
   tray = new Tray(path.join(__dirname, './assets/cup.png'));
+
+  const rightClickMenu = () => {
+    const menu = [
+      {
+        label: 'Logs',
+        type: 'checkbox',
+        click: (event) =>console.log('Open Logs'),
+        accelerator: 'Command+L'
+      },
+      {
+        type: 'separator',
+      },
+      {
+        role: 'quit',
+        accelerator: 'Command+Q',
+      },
+    ];
+
+    tray.popUpContextMenu(Menu.buildFromTemplate(menu));
+  };
 
   setWinPosition();
 
+  tray.setIgnoreDoubleClickEvents(true)
+
   tray.on('click', function() { toggleWindow() })
+
+  tray.on('right-click',rightClickMenu)
 
   // const contextMenu = Menu.buildFromTemplate([
   //   {
